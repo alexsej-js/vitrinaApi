@@ -262,7 +262,20 @@ public class CreationUserTest {
                 .body("trace", equalTo("Ошибка, данный номер телефона уже зарегистрирован"))
                 .body("error", equalTo("Ошибка, данный номер телефона уже зарегистрирован"));
     }
+    @Test
+    public void checkCreateUserNoRequiredFields2() {  // Проверка создания участника с заполнением только обязательных полей
+        VitrinaApi vitrinaApi = new VitrinaApi();
+        UserDTO userNoRequiredFields = UserDTO.builder()
+                .first_name("Олег")
+                .last_name("Сергеев")
+                .phone("+79" + numPhone)
+                .email("java" + "-" + numMail + "@test.ru"  )
+                .build();
 
+        vitrinaApi.createUser(userNoRequiredFields)
+                .statusCode(HttpStatus.SC_OK)
+                .body("message", equalTo("Участник зарегистрирован"));
+    }
     @Test
     public void checkCreateUserIncorrectEmail() { // Проверка валидации поля "Email", при регистрации участника (-)
         VitrinaApi vitrinaApi = new VitrinaApi();
